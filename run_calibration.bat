@@ -1,0 +1,2 @@
+c:\Users\relampago\Anaconda2\python settings_generator.py --c LF_calibration_settings.txt --f DaqSettings_calibration_mode.xml
+c:\Users\relampago\Anaconda2\python main.py --settings DaqSettings_calibration_mode.xml --autostart True

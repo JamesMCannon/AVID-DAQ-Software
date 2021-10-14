@@ -1,0 +1,199 @@
+<!-- Settings generated at 2020-05-22 20:31:18.194000 [UTC] by settings_generator -->
+
+<DaqConfiguration>
+	<StationSettings>
+		<station_id>XX</station_id>
+		<station_name>site_name</station_name>
+		<IsLF>0</IsLF>
+		<IsResettable>0</IsResettable>
+		<station_description>CU VLF Receiver</station_description>
+		<hardware_description>VLF Receiver</hardware_description>
+		<antenna_bearings>.</antenna_bearings>
+		<antenna_description>.</antenna_description>
+		<install_date>.</install_date>
+		<contact_info>.</contact_info>
+		<adc_type>.</adc_type>
+		<computer_sn>.</computer_sn>
+		<adc_sn>.</adc_sn>
+		<gps_sn>.</gps_sn>
+	</StationSettings>
+	<DaqCard module="NIDAQmx">
+		<SampleClockName>PFI2</SampleClockName>
+		<StartTriggerName>PFI0</StartTriggerName>
+		<SampleClockPolarity>1</SampleClockPolarity>
+		<StartTriggerPolarity>0</StartTriggerPolarity>
+		<SampleRate>100000</SampleRate>
+		<DevName>Dev5</DevName>
+		<NumChannels>2</NumChannels>
+		<SingleEndedInput>0</SingleEndedInput>
+	</DaqCard>
+	<GpsClock module="MotorolaClock">
+		<DataBits>8</DataBits>
+		<Parity>N</Parity>
+		<StopBits>1</StopBits>
+		<BaudRate>9600</BaudRate>
+		<ComPortNumber>3</ComPortNumber>
+	</GpsClock>
+	<TaskManagerSettings>
+		<Task module="Cleanup">
+			<Directory>Continuous</Directory>
+			<Interval>3600</Interval>
+			<StartTime>00:00</StartTime>
+			<EndTime>23:59</EndTime>
+			<DataLifetime>1</DataLifetime>
+		</Task>
+		<Task module="Cleanup">
+			<Directory>Synoptic</Directory>
+			<Interval>3600</Interval>
+			<StartTime>00:00</StartTime>
+			<EndTime>23:59</EndTime>
+			<DataLifetime>5</DataLifetime>
+		</Task>
+		<Task module="Cleanup">
+			<Directory>Spectrogram</Directory>
+			<Interval>3600</Interval>
+			<StartTime>00:00</StartTime>
+			<EndTime>23:59</EndTime>
+			<DataLifetime>5</DataLifetime>
+		</Task>
+		<Task module="Cleanup">
+			<Directory>Narrowband</Directory>
+			<Interval>3600</Interval>
+			<StartTime>00:00</StartTime>
+			<EndTime>23:59</EndTime>
+			<DataLifetime>5</DataLifetime>
+		</Task>
+		<Task module="CopyFiles">
+			<Filename>DaqSettings.xml</Filename>
+			<Filename0>default_LF_settings.txt</Filename0>
+			<Filename1>default_VLF_settings.txt</Filename1>
+			<Filename4>log/VLFDAQ.log</Filename4>
+			<Interval>43200</Interval>
+			<Delete>0</Delete>
+			<StartTime>00:00</StartTime>
+			<EndTime>23:59</EndTime>
+			<WriteDirectory>ssh_Log</WriteDirectory>
+		</Task>
+	</TaskManagerSettings>
+	<PostProcessorTree>
+		<PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="MatFileWriter">
+					<adc_channel_number>0</adc_channel_number>
+					<DirectoryRoot>Continuous</DirectoryRoot>
+					<IsSynoptic>0</IsSynoptic>
+					<Duration>900</Duration>
+				</PostProcessor>
+			</PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="MatFileWriter">
+					<adc_channel_number>0</adc_channel_number>
+					<DirectoryRoot>Synoptic</DirectoryRoot>
+					<IsSynoptic>1</IsSynoptic>
+					<SynopticPeriod>3600</SynopticPeriod>
+					<Duration>60</Duration>
+				</PostProcessor>
+			</PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="Narrowband">
+					<adc_channel_number>0</adc_channel_number>
+					<DirectoryRoot>Narrowband</DirectoryRoot>
+					<do_sph_chan>1</do_sph_chan>
+					<do_low_res>1</do_low_res>
+					<Duration>86400</Duration>
+					<call_sign>NLK,NAA,NML</call_sign>
+					<call_sign_file>nb.conf</call_sign_file>
+					<filter_taps>filter_taps.txt</filter_taps>
+				</PostProcessor>
+			</PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="Specgram">
+					<adc_channel_number>0</adc_channel_number>
+					<DirectoryRoot>Spectrogram</DirectoryRoot>
+					<Duration>10</Duration>
+					<Period>1800</Period>
+					<NFFT>1024</NFFT>
+					<fmax>40</fmax>
+					<cmin>-50</cmin>
+					<cmax>40</cmax>
+					<remove_hum>0</remove_hum>
+					<f0>60</f0>
+					<hum_fc>4000</hum_fc>
+					<psd>0</psd>
+					<quality>75</quality>
+				</PostProcessor>
+			</PostProcessorSequence>
+		</PostProcessorSequence>
+		<PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="MatFileWriter">
+					<adc_channel_number>1</adc_channel_number>
+					<DirectoryRoot>Continuous</DirectoryRoot>
+					<IsSynoptic>0</IsSynoptic>
+					<Duration>900</Duration>
+				</PostProcessor>
+			</PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="MatFileWriter">
+					<adc_channel_number>1</adc_channel_number>
+					<DirectoryRoot>Synoptic</DirectoryRoot>
+					<IsSynoptic>1</IsSynoptic>
+					<SynopticPeriod>3600</SynopticPeriod>
+					<Duration>60</Duration>
+				</PostProcessor>
+			</PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="Narrowband">
+					<adc_channel_number>1</adc_channel_number>
+					<DirectoryRoot>Narrowband</DirectoryRoot>
+					<do_sph_chan>1</do_sph_chan>
+					<do_low_res>1</do_low_res>
+					<Duration>86400</Duration>
+					<call_sign>NLK,NAA,NML</call_sign>
+					<call_sign_file>nb.conf</call_sign_file>
+					<filter_taps>filter_taps.txt</filter_taps>
+				</PostProcessor>
+			</PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="Specgram">
+					<adc_channel_number>1</adc_channel_number>
+					<DirectoryRoot>Spectrogram</DirectoryRoot>
+					<Duration>10</Duration>
+					<Period>1800</Period>
+					<NFFT>1024</NFFT>
+					<fmax>40</fmax>
+					<cmin>-50</cmin>
+					<cmax>40</cmax>
+					<remove_hum>0</remove_hum>
+					<f0>60</f0>
+					<hum_fc>4000</hum_fc>
+					<psd>0</psd>
+					<quality>75</quality>
+				</PostProcessor>
+			</PostProcessorSequence>
+		</PostProcessorSequence>
+	</PostProcessorTree>
+	<Schedule>
+		<Entry>
+			<Duration>86400</Duration>
+			<Start>00:00</Start>
+		</Entry>
+	</Schedule>
+	<Logger>
+		<LogDir>log/</LogDir>
+		<ErrorEmail>0</ErrorEmail>
+		<ErrorEmailFrom>[your_email_here]</ErrorEmailFrom>
+		<ErrorEmailTo>[your_email_here]</ErrorEmailTo>
+		<ErrorEmailPw>[your_very_insecure_password_here]</ErrorEmailPw>
+		<ErrorPost>0</ErrorPost>
+		<LogPostUrl>/field_sites_logs/logging.php</LogPostUrl>
+		<LogPostServer>vlf-engineering.stanford.edu:80</LogPostServer>
+		<ConsoleLevel>TIMESTAMP</ConsoleLevel>
+		<LogFileLevel>DEBUG</LogFileLevel>
+		<PostLevel>WARNING</PostLevel>
+	</Logger>
+	<timing_limits>
+		<td_upper>900000</td_upper>
+		<td_lower>300000</td_lower>
+	</timing_limits>
+</DaqConfiguration>

@@ -1,0 +1,125 @@
+<!-- Settings generated at 2018-06-25 22:18:37.385000 [UTC] by settings_generator -->
+
+<DaqConfiguration>
+	<StationSettings>
+		<station_id>R3</station_id>
+		<station_name>Relampago_LF3</station_name>
+		<IsLF>1</IsLF>
+		<IsResettable>0</IsResettable>
+		<station_description>RELAMPAGO LF Receiver</station_description>
+		<hardware_description>LF Receiver</hardware_description>
+		<antenna_bearings>.</antenna_bearings>
+		<antenna_description>T2 triangle, 13 turns</antenna_description>
+		<install_date>.</install_date>
+		<contact_info>.</contact_info>
+		<adc_type>.</adc_type>
+		<computer_sn>.</computer_sn>
+		<adc_sn>.</adc_sn>
+		<gps_sn>.</gps_sn>
+	</StationSettings>
+	<DaqCard module="NIDAQmx">
+		<SampleClockName>PFI2</SampleClockName>
+		<StartTriggerName>PFI0</StartTriggerName>
+		<SampleClockPolarity>1</SampleClockPolarity>
+		<StartTriggerPolarity>0</StartTriggerPolarity>
+		<SampleRate>1000000</SampleRate>
+		<DevName>Dev2</DevName>
+		<NumChannels>2</NumChannels>
+		<SingleEndedInput>0</SingleEndedInput>
+	</DaqCard>
+	<GpsClock module="MotorolaClock">
+		<DataBits>8</DataBits>
+		<Parity>N</Parity>
+		<StopBits>1</StopBits>
+		<BaudRate>9600</BaudRate>
+		<ComPortNumber>5</ComPortNumber>
+	</GpsClock>
+	<TaskManagerSettings>
+		<Task module="CopyFiles">
+			<Filename>DaqSettings.xml</Filename>
+			<Filename0>default_LF_settings.txt</Filename0>
+			<Filename1>default_VLF_settings.txt</Filename1>
+			<Filename4>log/VLFDAQ.log</Filename4>
+			<Interval>43200</Interval>
+			<Delete>0</Delete>
+			<StartTime>00:00</StartTime>
+			<EndTime>23:59</EndTime>
+			<WriteDirectory>Calibration Data\ssh_Log</WriteDirectory>
+		</Task>
+	</TaskManagerSettings>
+	<PostProcessorTree>
+		<PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="MatFileWriter">
+					<adc_channel_number>0</adc_channel_number>
+					<DirectoryRoot>Calibration Data\Continuous</DirectoryRoot>
+					<IsSynoptic>0</IsSynoptic>
+					<Duration>60</Duration>
+				</PostProcessor>
+			</PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="Specgram">
+					<adc_channel_number>0</adc_channel_number>
+					<DirectoryRoot>Calibration Data\Spectrogram</DirectoryRoot>
+					<Duration>10</Duration>
+					<Period>60</Period>
+					<NFFT>16384</NFFT>
+					<fmax>400</fmax>
+					<cmin>-50</cmin>
+					<cmax>10</cmax>
+					<remove_hum>0</remove_hum>
+					<f0>60</f0>
+					<hum_fc>4000</hum_fc>
+					<psd>0</psd>
+					<quality>75</quality>
+				</PostProcessor>
+			</PostProcessorSequence>
+		</PostProcessorSequence>
+		<PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="MatFileWriter">
+					<adc_channel_number>1</adc_channel_number>
+					<DirectoryRoot>Calibration Data\Continuous</DirectoryRoot>
+					<IsSynoptic>0</IsSynoptic>
+					<Duration>60</Duration>
+				</PostProcessor>
+			</PostProcessorSequence>
+			<PostProcessorSequence>
+				<PostProcessor module="Specgram">
+					<adc_channel_number>1</adc_channel_number>
+					<DirectoryRoot>Calibration Data\Spectrogram</DirectoryRoot>
+					<Duration>10</Duration>
+					<Period>60</Period>
+					<NFFT>16384</NFFT>
+					<fmax>400</fmax>
+					<cmin>-50</cmin>
+					<cmax>10</cmax>
+					<remove_hum>0</remove_hum>
+					<f0>60</f0>
+					<hum_fc>4000</hum_fc>
+					<psd>0</psd>
+					<quality>75</quality>
+				</PostProcessor>
+			</PostProcessorSequence>
+		</PostProcessorSequence>
+	</PostProcessorTree>
+	<Schedule>
+		<Entry>
+			<Duration>86400</Duration>
+			<Start>00:00</Start>
+		</Entry>
+	</Schedule>
+	<Logger>
+		<LogDir>log/</LogDir>
+		<ErrorEmail>0</ErrorEmail>
+		<ErrorEmailFrom>cu.lair.fieldsites@gmail.com</ErrorEmailFrom>
+		<ErrorEmailTo>cu.lair.fieldsites@gmail.com</ErrorEmailTo>
+		<ErrorEmailPw>relampagoLF</ErrorEmailPw>
+		<ErrorPost>0</ErrorPost>
+		<LogPostUrl>/field_sites_logs/logging.php</LogPostUrl>
+		<LogPostServer>vlf-engineering.stanford.edu:80</LogPostServer>
+		<ConsoleLevel>TIMESTAMP</ConsoleLevel>
+		<LogFileLevel>TIMESTAMP</LogFileLevel>
+		<PostLevel>WARNING</PostLevel>
+	</Logger>
+</DaqConfiguration>
