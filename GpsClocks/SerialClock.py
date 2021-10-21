@@ -328,8 +328,7 @@ class SerialClock(Clock):
             self.logger.error('Unknown error while reading from serial port.')
             self.flags.error.set()
             raise
-
-            
+          
     def _decodeHousekeeping(self):
         """
         Read message from embedded controller.

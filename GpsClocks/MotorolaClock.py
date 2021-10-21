@@ -91,6 +91,7 @@ class MotorolaClock(SerialClock):
         self.msg_hdr['@@Eq'] = (96, self._DecodeTimestamp) #@@Eq message is 96 bytes long
         self.msg_hdr['@@Bb'] = (92, self._DecodeVisibleSat)  #@@Bb message is 96 bytes long
         self.msg_hdr['@@Ha'] = (154, self._Decode12ChPosData)  #@@Ha message is 154 bytes long
+        self.msg_hdr['@@Hn'] = (78, self._Decode12ChTraimStatus)  #@@Hn message is 78 bytes long
         self.msg_hdr['@@Gd'] = (8, self._DecodeMode)  #@@Gd message is 8 bytes long
         
         # Add motorola GPS commands
@@ -115,20 +116,20 @@ class MotorolaClock(SerialClock):
         self.ser.flushInput()
         self.ser.flushOutput()
 
-        # Turn off all other possible timestamp generation
-        self.logger.debug('Sending @@Eq')
-        #self.ser.write(self.cmd["stop"])
-        self.WriteToSerial(self.cmd["stop"])
+        # # Turn off all other possible timestamp generation
+        # self.logger.debug('Sending @@Eq')
+        # #self.ser.write(self.cmd["stop"])
+        # self.WriteToSerial(self.cmd["stop"])
         
-        if not self._WaitForMessage('@@Eq',10):
-            # This is usually the first indication if serial port is not working
-            # we want to stop this current thread
+        # if not self._WaitForMessage('@@Eq',10):
+        #     # This is usually the first indication if serial port is not working
+        #     # we want to stop this current thread
 
-            # Sending Stop command
-            self.logger.info('Writing Stop Command to GPS ...')
-            #self.ser.write(self.cmd["stop"])
-            self.WriteToSerial(self.cmd["stop"])
-            return False
+        #     # Sending Stop command
+        #     self.logger.info('Writing Stop Command to GPS ...')
+        #     #self.ser.write(self.cmd["stop"])
+        #     self.WriteToSerial(self.cmd["stop"])
+        #     return False
 
         self.logger.debug('Sending @@Bb')
         #self.ser.write(self.cmd["stopBbmsg"])
@@ -386,6 +387,20 @@ class MotorolaClock(SerialClock):
         # Put decoded message into the message queue
         try:
             self.message_queue.put("@@Ha", timeout=1)
+        except Full:
+            error_msg = 'GPS message queue full.'
+            self.logger.error(error_msg)
+            raise ClockMsgQueueFull(error_msg)    
+        except:
+            self.logger.error("Unknown error putting to msg queue.")
+            raise  
+    
+    def _Decode12ChTraimStatus(self, message):
+        self.logger.debug("Decoding 12 Channel T-RAIM Status message")
+        
+        # Put decoded message into the message queue
+        try:
+            self.message_queue.put("@@Hn", timeout=1)
         except Full:
             error_msg = 'GPS message queue full.'
             self.logger.error(error_msg)
